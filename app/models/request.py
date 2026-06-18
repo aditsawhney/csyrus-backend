@@ -21,6 +21,12 @@ class ApprovalRequest(Base):
     created_by = Column(GUID(), ForeignKey("users.id"), nullable=False)
     reviewer_id = Column(GUID(), ForeignKey("users.id"), nullable=False)
 
+    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
+
+    requester = relationship("User", back_populates="requests_created", foreign_keys=[created_by])
+    reviewer = relationship("User", back_populates="requests_to_review", foreign_keys=[reviewer_id])
+    review_actions = relationship("ReviewAction", back_populates="request", cascade="all, delete-orphan")
     created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), onupdate=lambda: datetime.now(timezone.utc), nullable=False)
 
