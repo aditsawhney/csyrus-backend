@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, Enum, ForeignKey, Text
 from sqlalchemy.orm import relationship
@@ -17,7 +17,7 @@ class ReviewAction(Base):
     action = Column(Enum(ReviewActionType), nullable=False)
     comments = Column(Text, nullable=True)
     reviewed_by = Column(GUID(), ForeignKey("users.id"), nullable=False)
-    reviewed_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    reviewed_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
 
     request = relationship("ApprovalRequest", back_populates="review_actions")
     reviewer = relationship("User")
