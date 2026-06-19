@@ -1,8 +1,8 @@
-# Csyrus Workflow Approval Management System — Backend
+# Csyrus Workflow Approval Management System - Backend
 
 A FastAPI backend for a lightweight internal approvals tool. Requesters submit
 approval requests to a specific reviewer; reviewers approve or reject with
-comments. Authentication is Google OAuth 2.0 only — there is no
+comments. Authentication is Google OAuth 2.0 only - there is no
 email/password login path.
 
 ## Stack
@@ -31,7 +31,7 @@ See `ENGINEERING_DECISIONS.md` for why the code is split this way.
 ## Setup
 
 Requires Python 3.11+ and a running PostgreSQL instance (skip Postgres
-entirely if you only want to run the test suite — tests use an in-memory
+entirely if you only want to run the test suite - tests use an in-memory
 SQLite database).
 
 Using `uv`:
@@ -76,7 +76,7 @@ uvicorn main:app --reload
 The API comes up on `http://localhost:8000`. Interactive docs (Swagger UI)
 are available at `http://localhost:8000/docs`, and the raw OpenAPI schema at
 `/openapi.json`. Tables are created automatically on startup via
-`Base.metadata.create_all` — see `ENGINEERING_DECISIONS.md` for why this
+`Base.metadata.create_all` - see `ENGINEERING_DECISIONS.md` for why this
 isn't Alembic yet.
 
 ## Running tests
@@ -107,9 +107,9 @@ the network boundary in `tests/test_auth.py`.
 | POST | `/requests` | Create a request (`title`, `description`, `priority`, `reviewer_id`) |
 | GET | `/requests` | List the current user's own requests |
 | GET | `/requests/{id}` | Fetch one of the current user's own requests |
-| PUT | `/requests/{id}` | Edit a request — only while it's still `PENDING` |
-| DELETE | `/requests/{id}` | Delete a request — only while it's still `PENDING` |
-| GET | `/requests/reviewers` | List users with the Reviewer role, for populating the assignment dropdown (not in the original spec — see `COLLABORATION.md`) |
+| PUT | `/requests/{id}` | Edit a request - only while it's still `PENDING` |
+| DELETE | `/requests/{id}` | Delete a request - only while it's still `PENDING` |
+| GET | `/requests/reviewers` | List users with the Reviewer role, for populating the assignment dropdown (not in the original spec - see `COLLABORATION.md`) |
 
 ### Reviewer (Reviewer role)
 
@@ -134,4 +134,4 @@ JWT Session Created → Protected App Access
 
 New Google accounts are provisioned as `REQUESTER` by default. Promoting an
 account to `REVIEWER` is treated as an administrative action outside the
-OAuth flow — see `ENGINEERING_DECISIONS.md` and `COLLABORATION.md`.
+OAuth flow - see `ENGINEERING_DECISIONS.md` and `COLLABORATION.md`.

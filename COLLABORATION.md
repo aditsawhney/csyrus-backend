@@ -26,12 +26,12 @@
 ## Known limitations
 
 - No way to revoke a JWT session before it expires (no server-side
-  session store, no token blocklist) — a stolen token is valid for the
+  session store, no token blocklist) - a stolen token is valid for the
   full `JWT_EXPIRE_MINUTES` window.
 - No pagination, filtering, or sorting on `GET /requests` or `GET
   /reviewer/requests`. Fine at assessment scale, not fine once a reviewer
   has hundreds of requests.
-- No way to promote a user to Reviewer through the API or UI — it has to
+- No way to promote a user to Reviewer through the API or UI - it has to
   be done directly in the database. Documented rather than silently
   worked around.
 - No rate limiting on the OAuth callback or any other endpoint.
@@ -56,13 +56,13 @@
 ## Scalability considerations
 
 The current design comfortably handles the access patterns a single
-organization's internal approvals tool would generate — read-heavy,
+organization's internal approvals tool would generate - read-heavy,
 low write volume, no need for real-time updates. If this grew into
 something heavier, the first changes would be: pagination on the list
 endpoints, an index-backed search instead of full-table scans as the
 `approval_requests` table grows, and moving the OAuth token exchange call
 behind a timeout-and-retry wrapper since it's the one external dependency
 in the otherwise self-contained request lifecycle. None of that is needed
-at this scope, which is why it isn't built — premature infrastructure for
+at this scope, which is why it isn't built - premature infrastructure for
 a tool with a handful of users would be its own kind of bad engineering
 judgment.

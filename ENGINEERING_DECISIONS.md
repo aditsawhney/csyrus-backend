@@ -8,7 +8,7 @@ repositories → models. Each layer has one job.
 - **API routers** parse the request, enforce role-based access through a
   dependency, call a service, and return the result. They contain no
   business rules.
-- **Services** hold the actual rules — who can create a request, when a
+- **Services** hold the actual rules - who can create a request, when a
   request can be edited, whether a reviewer is allowed to act on a given
   request. Services raise framework-agnostic exceptions
   (`NotFoundError`, `ForbiddenError`, `ConflictError`, `UnauthorizedError`)
@@ -52,7 +52,7 @@ A few decisions inside that flow:
   relies on the cookie so the JWT is never exposed to frontend JavaScript.
 - **Role assignment on first login.** The spec defines two roles but
   doesn't define how an account becomes a Reviewer. Provisioning every new
-  Google sign-in as a Requester is the safe default — promoting someone to
+  Google sign-in as a Requester is the safe default - promoting someone to
   Reviewer is an administrative action, not something a user should be
   able to grant themselves by checking a box during signup. See
   `COLLABORATION.md` for what an admin-facing promotion flow would look
@@ -62,7 +62,7 @@ A few decisions inside that flow:
 
 Three tables, matching the brief: `users`, `approval_requests`,
 `review_actions`. A `ReviewAction` row is created on every approve/reject,
-even though `ApprovalRequest.status` already tracks the current state —
+even though `ApprovalRequest.status` already tracks the current state -
 this keeps a permanent audit trail (who decided what, and when) separate
 from the request's current state, which a single mutable status column on
 its own wouldn't give you for free.
@@ -73,7 +73,7 @@ client-side later if needed. The one wrinkle: SQLAlchemy's UUID handling
 differs between Postgres and SQLite. Rather than write separate models for
 local dev versus tests, `app/database/types.py` defines a single `GUID`
 type decorator that uses Postgres's native UUID type in production and
-falls back to a `CHAR(36)` string under SQLite — so the test suite runs
+falls back to a `CHAR(36)` string under SQLite - so the test suite runs
 against the exact same model definitions that hit Postgres in production.
 
 ## Testing strategy
@@ -81,7 +81,7 @@ against the exact same model definitions that hit Postgres in production.
 Tests run through FastAPI's `TestClient` against the real routers, with
 only two things swapped out: the database (in-memory SQLite via dependency
 override) and the Google network call (mocked in `test_auth.py`). This was
-a deliberate choice over mocking the service layer — hitting the actual
+a deliberate choice over mocking the service layer - hitting the actual
 HTTP layer also exercises Pydantic validation, the role-based dependencies,
 and the exception-to-status-code mapping, which is most of what could
 actually break.
