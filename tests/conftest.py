@@ -1,6 +1,6 @@
 import os
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Force a throwaway SQLite config before any app module reads settings,
 # so tests never touch the real Postgres database or real Google
@@ -66,7 +66,7 @@ def make_user(db_session):
     def _make_user(role: UserRole, name="Test User", email=None, google_id=None):
         email = email or f"{uuid.uuid4()}@example.com"
         google_id = google_id or str(uuid.uuid4())
-        user = User(name=name, email=email, google_id=google_id, role=role, created_at=datetime.utcnow())
+        user = User(name=name, email=email, google_id=google_id, role=role, created_at=datetime.now(timezone.utc))
         db_session.add(user)
         db_session.commit()
         db_session.refresh(user)
