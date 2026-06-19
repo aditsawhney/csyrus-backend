@@ -1,5 +1,5 @@
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 
 from sqlalchemy import Column, DateTime, Enum, String
 from sqlalchemy.orm import relationship
@@ -17,7 +17,7 @@ class User(Base):
     email = Column(String(255), nullable=False, unique=True, index=True)
     google_id = Column(String(255), nullable=False, unique=True, index=True)
     role = Column(Enum(UserRole), nullable=False, default=UserRole.REQUESTER)
-    created_at = Column(DateTime, default=datetime.utcnow, nullable=False)
+    created_at = Column(DateTime(timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
 
     requests_created = relationship(
         "ApprovalRequest",
